@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Pasajero{% endblock %}
+{% block header_title %}Eliminar Pasajero{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <h5>¿Estás seguro de eliminar este pasajero?</h5>
+            <p><strong>{{ pasajero.nombre }} {{ pasajero.apellido }}</strong></p>
+            <p>Email: {{ pasajero.email }}</p>
+            <p>Teléfono: {{ pasajero.telefono }}</p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mt-3">
+                <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                <a href="{% url 'pasajero_listar' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

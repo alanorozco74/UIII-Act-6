@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Viajes - Sistema de Autobuses{% endblock %}
+{% block header_title %}Gestión de Viajes{% endblock %}
+{% block header_subtitle %}Administra los viajes programados{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'viaje_crear' %}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-2"></i> Nuevo Viaje
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-journey me-2"></i> Listado de Viajes</h5>
+        <span class="badge bg-secondary">{{ viajes|length }} registros</span>
+    </div>
+    <div class="card-body">
+        {% if viajes %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ruta</th>
+                        <th>Autobús</th>
+                        <th>Conductor</th>
+                        <th>Fecha Salida</th>
+                        <th>Asientos</th>
+                        <th>Estado</th>
+                        <th width="120" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for viaje in viajes %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-signpost text-primary me-3"></i>
+                                <div>
+                                    <strong>{{ viaje.ruta.origen }} → {{ viaje.ruta.destino }}</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-dark">{{ viaje.autobus.placa }}</span>
+                        </td>
+                        <td>{{ viaje.conductor.nombre }} {{ viaje.conductor.apellido }}</td>
+                        <td>{{ viaje.fecha_salida|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">{{ viaje.asientos_disponibles }}</span>
+                        </td>
+                        <td>
+                            {% if viaje.estado == 'programado' %}
+                            <span class="badge bg-primary">Programado</span>
+                            {% elif viaje.estado == 'en_curso' %}
+                            <span class="badge bg-warning text-dark">En Curso</span>
+                            {% elif viaje.estado == 'completado' %}
+                            <span class="badge bg-success">Completado</span>
+                            {% else %}
+                            <span class="badge bg-danger">Cancelado</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{% url 'viaje_editar' viaje.id %}" 
+                                   class="btn btn-outline-primary"
+                                   data-bs-toggle="tooltip" 
+                                   title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'viaje_eliminar' viaje.id %}" 
+                                   class="btn btn-outline-danger"
+                                   data-bs-toggle="tooltip" 
+                                   title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-journey fs-1 text-muted"></i>
+            </div>
+            <h5 class="text-muted mb-3">No hay viajes registrados</h5>
+            <p class="text-muted mb-4">Comienza agregando tu primer viaje al sistema</p>
+            <a href="{% url 'viaje_crear' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i> Agregar Primer Viaje
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

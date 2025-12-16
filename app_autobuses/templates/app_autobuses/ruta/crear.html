@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Ruta{% endblock %}
+{% block header_title %}Nueva Ruta{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Origen</label>
+                    {{ form.origen }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Destino</label>
+                    {{ form.destino }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Distancia (km)</label>
+                    {{ form.distancia_km }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Duración Estimada</label>
+                    {{ form.duracion_estimada }}
+                    <small class="form-text text-muted">Ejemplo: 2h 30m</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Precio Base</label>
+                    {{ form.precio_base }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="form-check mt-4">
+                        {{ form.activa }}
+                        <label class="form-check-label">Ruta activa</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'ruta_listar' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Viaje{% endblock %}
+{% block header_title %}Nuevo Viaje{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Autobús</label>
+                    {{ form.autobus }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ruta</label>
+                    {{ form.ruta }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Conductor</label>
+                    {{ form.conductor }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Estado</label>
+                    {{ form.estado }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha de Salida</label>
+                    {{ form.fecha_salida }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha Llegada Estimada</label>
+                    {{ form.fecha_llegada_estimada }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Asientos Disponibles</label>
+                    {{ form.asientos_disponibles }}
+                </div>
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'viaje_listar' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

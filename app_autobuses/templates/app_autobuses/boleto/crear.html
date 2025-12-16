@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Vender Boleto{% endblock %}
+{% block header_title %}Vender Boleto{% endblock %}
+{% block header_subtitle %}Registro de nueva venta{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'boleto_listar' %}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-2"></i> Volver
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-ticket-perforated me-2"></i> Información del Boleto</h5>
+    </div>
+    <div class="card-body">
+        <!-- Verificar requisitos -->
+        {% if not viajes %}
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>No hay viajes disponibles</strong>
+            <p class="mb-0 mt-2">Para vender boletos, primero debes crear un viaje.</p>
+            <a href="{% url 'viaje_crear' %}" class="btn btn-sm btn-warning mt-2">
+                <i class="bi bi-plus-circle me-1"></i> Crear Viaje
+            </a>
+        </div>
+        {% elif not pasajeros %}
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>No hay pasajeros registrados</strong>
+            <p class="mb-0 mt-2">Para vender boletos, primero debes registrar pasajeros.</p>
+            <a href="{% url 'pasajero_crear' %}" class="btn btn-sm btn-warning mt-2">
+                <i class="bi bi-plus-circle me-1"></i> Registrar Pasajero
+            </a>
+        </div>
+        {% else %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Mostrar errores -->
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <i class="bi bi-x-circle me-2"></i>
+                <strong>Por favor corrige los siguientes errores:</strong>
+                <ul class="mb-0 mt-2">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="row">
+                <!-- Viaje -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Viaje *</label>
+                    {{ form.viaje }}
+                    <div class="form-text">Selecciona uno de los {{ viajes|length }} viajes disponibles</div>
+                </div>
+                
+                <!-- Pasajero -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Pasajero *</label>
+                    {{ form.pasajero }}
+                    <div class="form-text">Selecciona uno de los {{ pasajeros|length }} pasajeros registrados</div>
+                </div>
+                
+                <!-- Asiento y precio -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Número de Asiento *</label>
+                    {{ form.asiento_numero }}
+                    <div class="form-text">Ejemplo: 1, 2, 3...</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Precio ($) *</label>
+                    {{ form.precio }}
+                    <div class="form-text">Precio del boleto</div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Estado</label>
+                    {{ form.estado }}
+                </div>
+            </div>
+            
+            <!-- Información importante -->
+            <div class="alert alert-info mt-3">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Información importante:</strong>
+                <ul class="mb-0 mt-2">
+                    <li>El código del boleto se generará automáticamente</li>
+                    <li>Al guardar, se reducirá automáticamente un asiento disponible del viaje</li>
+                    <li>Verifica que el asiento no esté ya ocupado</li>
+                </ul>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-check-circle me-2"></i> Registrar Venta
+                </button>
+                <a href="{% url 'boleto_listar' %}" class="btn btn-outline-secondary btn-lg ms-2">
+                    <i class="bi bi-x-circle me-2"></i> Cancelar
+                </a>
+                
+                <!-- Botón de emergencia -->
+                <a href="{% url 'boleto_manual' %}" class="btn btn-warning btn-lg ms-2">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Formulario de Emergencia
+                </a>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

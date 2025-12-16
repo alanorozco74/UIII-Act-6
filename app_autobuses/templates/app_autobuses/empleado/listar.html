@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Empleados - Sistema de Autobuses{% endblock %}
+{% block header_title %}Gestión de Empleados{% endblock %}
+{% block header_subtitle %}Administra el personal de la empresa{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'empleado_crear' %}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-2"></i> Nuevo Empleado
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-people me-2"></i> Listado de Empleados</h5>
+        <span class="badge bg-secondary">{{ empleados|length }} registros</span>
+    </div>
+    <div class="card-body">
+        {% if empleados %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="90" class="text-center">Foto</th>
+                        <th>Nombre Completo</th>
+                        <th>Puesto</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Salario</th>
+                        <th>Estado</th>
+                        <th width="120" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empleado in empleados %}
+                    <tr>
+                        <td class="text-center">
+                            {% if empleado.imagen %}
+                            <img src="{{ empleado.imagen.url }}" 
+                                 class="img-tabla rounded-circle"
+                                 alt="{{ empleado.nombre }} {{ empleado.apellido }}"
+                                 data-bs-toggle="tooltip" 
+                                 title="{{ empleado.nombre }} {{ empleado.apellido }}">
+                            {% else %}
+                            <div class="sin-imagen rounded-circle" data-bs-toggle="tooltip" title="Sin foto">
+                                <i class="bi bi-person-circle"></i>
+                                <small>Sin foto</small>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="fw-bold">{{ empleado.nombre }} {{ empleado.apellido }}</td>
+                        <td>
+                            <span class="badge bg-secondary">{{ empleado.get_puesto_display }}</span>
+                        </td>
+                        <td>{{ empleado.telefono }}</td>
+                        <td>
+                            <a href="mailto:{{ empleado.email }}" class="text-decoration-none">
+                                {{ empleado.email }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="badge bg-success">${{ empleado.salario }}</span>
+                        </td>
+                        <td>
+                            {% if empleado.activo %}
+                            <span class="badge bg-success">Activo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{% url 'empleado_editar' empleado.id %}" 
+                                   class="btn btn-outline-primary"
+                                   data-bs-toggle="tooltip" 
+                                   title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'empleado_eliminar' empleado.id %}" 
+                                   class="btn btn-outline-danger"
+                                   data-bs-toggle="tooltip" 
+                                   title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-people fs-1 text-muted"></i>
+            </div>
+            <h5 class="text-muted mb-3">No hay empleados registrados</h5>
+            <p class="text-muted mb-4">Comienza agregando tu primer empleado al sistema</p>
+            <a href="{% url 'empleado_crear' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i> Agregar Primer Empleado
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

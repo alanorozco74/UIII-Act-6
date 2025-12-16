@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Autobuses - Sistema de Autobuses{% endblock %}
+{% block header_title %}Gestión de Autobuses{% endblock %}
+{% block header_subtitle %}Administra la flota de autobuses{% endblock %}
+
+{% block header_buttons %}
+<a href="{% url 'autobus_crear' %}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-2"></i> Nuevo Autobús
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-list me-2"></i> Listado de Autobuses</h5>
+        <span class="badge bg-secondary">{{ autobuses|length }} registros</span>
+    </div>
+    <div class="card-body">
+        {% if autobuses %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="90" class="text-center">Imagen</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Placa</th>
+                        <th>Año</th>
+                        <th>Capacidad</th>
+                        <th>Estado</th>
+                        <th width="120" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for autobus in autobuses %}
+                    <tr>
+                        <td class="text-center">
+                            {% if autobus.imagen %}
+                            <img src="{{ autobus.imagen.url }}" 
+                                 class="img-tabla" 
+                                 alt="{{ autobus.marca }} {{ autobus.modelo }}"
+                                 data-bs-toggle="tooltip" 
+                                 title="{{ autobus.marca }} {{ autobus.modelo }}">
+                            {% else %}
+                            <div class="sin-imagen" data-bs-toggle="tooltip" title="Sin imagen">
+                                <i class="bi bi-bus-front"></i>
+                                <small>Sin imagen</small>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="fw-bold">{{ autobus.marca }}</td>
+                        <td>{{ autobus.modelo }}</td>
+                        <td>
+                            <span class="badge bg-dark">{{ autobus.placa }}</span>
+                        </td>
+                        <td>{{ autobus.año }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                <i class="bi bi-people-fill me-1"></i>{{ autobus.capacidad }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if autobus.estado == 'activo' %}
+                            <span class="badge bg-success">Activo</span>
+                            {% elif autobus.estado == 'mantenimiento' %}
+                            <span class="badge bg-warning text-dark">Mantenimiento</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{% url 'autobus_editar' autobus.id %}" 
+                                   class="btn btn-outline-primary"
+                                   data-bs-toggle="tooltip" 
+                                   title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'autobus_eliminar' autobus.id %}" 
+                                   class="btn btn-outline-danger"
+                                   data-bs-toggle="tooltip" 
+                                   title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-bus-front fs-1 text-muted"></i>
+            </div>
+            <h5 class="text-muted mb-3">No hay autobuses registrados</h5>
+            <p class="text-muted mb-4">Comienza agregando tu primer autobús al sistema</p>
+            <a href="{% url 'autobus_crear' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i> Agregar Primer Autobús
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Sistema de Autobuses{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-bus-front"></i> Autobuses</h5>
+                <p class="card-text display-6">{{ total_autobuses }}</p>
+                <a href="{% url 'autobus_listar' %}" class="text-white">Ver todos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-geo-alt"></i> Rutas Activas</h5>
+                <p class="card-text display-6">{{ total_rutas }}</p>
+                <a href="{% url 'ruta_listar' %}" class="text-white">Ver todas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-people"></i> Empleados</h5>
+                <p class="card-text display-6">{{ total_empleados }}</p>
+                <a href="{% url 'empleado_listar' %}" class="text-white">Ver todos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-person"></i> Pasajeros</h5>
+                <p class="card-text display-6">{{ total_pasajeros }}</p>
+                <a href="{% url 'pasajero_listar' %}" class="text-white">Ver todos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-journey"></i> Viajes Programados Hoy</h5>
+            </div>
+            <div class="card-body">
+                <h3>{{ viajes_hoy }}</h3>
+                <a href="{% url 'viaje_listar' %}" class="btn btn-primary">Ver viajes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-speedometer2"></i> Sistema Operativo</h5>
+            </div>
+            <div class="card-body">
+                <p>Bienvenido al sistema de gestión de autobuses.</p>
+                <p>Selecciona una opción del menú lateral para comenzar.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

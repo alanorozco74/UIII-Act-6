@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Autobús{% endblock %}
+{% block header_title %}Eliminar Autobús{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <h5>¿Estás seguro de eliminar este autobús?</h5>
+            <p><strong>{{ autobus.marca }} {{ autobus.modelo }}</strong> - {{ autobus.placa }}</p>
+        </div>
+        
+        {% if autobus.imagen %}
+        <div class="text-center mb-3">
+            <img src="{{ autobus.imagen.url }}" class="img-thumbnail" style="max-width: 200px;">
+        </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mt-3">
+                <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                <a href="{% url 'autobus_listar' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Boleto Manual{% endblock %}
+{% block header_title %}Crear Boleto Manual{% endblock %}
+{% block header_subtitle %}Función de emergencia{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-warning">
+        <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i> Función de Emergencia</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            Usa esta función solo si el formulario normal no funciona.
+        </div>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Viaje</label>
+                    <select name="viaje_id" class="form-control" required>
+                        <option value="">Selecciona un viaje</option>
+                        {% for viaje in viajes %}
+                        <option value="{{ viaje.id }}">
+                            {{ viaje.ruta }} ({{ viaje.get_estado_display }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Pasajero</label>
+                    <select name="pasajero_id" class="form-control" required>
+                        <option value="">Selecciona un pasajero</option>
+                        {% for pasajero in pasajeros %}
+                        <option value="{{ pasajero.id }}">
+                            {{ pasajero.nombre }} {{ pasajero.apellido }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Número de Asiento</label>
+                    <input type="number" name="asiento" class="form-control" min="1" required>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label class="form-label fw-bold">Precio ($)</label>
+                    <input type="number" name="precio" class="form-control" step="0.01" required>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-2"></i> Crear Boleto
+                </button>
+                <a href="{% url 'boleto_crear' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-arrow-left me-2"></i> Volver al formulario normal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
